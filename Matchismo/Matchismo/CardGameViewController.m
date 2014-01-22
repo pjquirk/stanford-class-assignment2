@@ -11,19 +11,12 @@
 #import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
-@property (strong,nonatomic) Deck* deck;
 @property (strong,nonatomic) CardMatchingGame* game;
+@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @end
 
 @implementation CardGameViewController
-
-- (Deck*)deck
-{
-    if (!_deck)
-        _deck = [self createDeck];
-    return _deck;
-}
 
 -(CardMatchingGame*)game
 {
@@ -38,21 +31,31 @@
 }
 
 - (IBAction)touchCard:(UIButton *)sender {
-    if ([sender.currentTitle length])
-    {
-        [sender setTitle:@"" forState:UIControlStateNormal];
-        [sender setBackgroundImage:[UIImage imageNamed:@"cardback"]
-                          forState:UIControlStateNormal];
+    NSUInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    [self.game chooseCardAtIndex:chosenButtonIndex];
+    [self updateUI];
+}
+
+-(void)updateUI
+{
+    for (UIButton* cardButton in self.cardButtons) {
+        NSUInteger buttonIndex = [self.cardButtons indexOfObject:cardButton];
+        Card* card = [self.game cardAtIndex:buttonIndex];
+        [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
+        [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
+        cardButton.enabled = !card.isMatched;
     }
-    else
-    {
-        Card* card = [self.deck getRandomCard];
-        [sender setTitle:card.contents forState:UIControlStateNormal];
-        [self.deck addCard:card];
-        
-        [sender setBackgroundImage:[UIImage imageNamed:@"cardfront"]
-                          forState:UIControlStateNormal];
-    }
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+}
+
+-(NSString*)titleForCard:(Card*)card
+{
+    return (card.isChosen) ? card.contents : @"";
+}
+
+-(UIImage*)backgroundImageForCard:(Card*)card
+{
+    return [UIImage imageNamed:card.isChosen ? @"cardfront" : @"cardback"];
 }
 
 @end
