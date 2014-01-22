@@ -22,7 +22,7 @@
     return _cards;
 }
 
--(instancetype)initWithCardCount:(NSUInteger)count usingDesk:(Deck *)deck
+-(instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck
 {
     self = [super init];
     
