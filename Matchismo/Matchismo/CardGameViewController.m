@@ -8,9 +8,12 @@
 
 #import "CardGameViewController.h"
 #import "PlayingCardDeck.h"
+#import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
 @property (strong,nonatomic) Deck* deck;
+@property (strong,nonatomic) CardMatchingGame* game;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @end
 
 @implementation CardGameViewController
@@ -18,8 +21,20 @@
 - (Deck*)deck
 {
     if (!_deck)
-        _deck = [[PlayingCardDeck alloc] init];
+        _deck = [self createDeck];
     return _deck;
+}
+
+-(CardMatchingGame*)game
+{
+    if (!_game)
+        _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck]];
+    return _game;
+}
+
+-(Deck*)createDeck
+{
+    return [[PlayingCardDeck alloc] init];
 }
 
 - (IBAction)touchCard:(UIButton *)sender {
