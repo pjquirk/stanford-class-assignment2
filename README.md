@@ -1,4 +1,4 @@
-stanford-class-assignment1
+stanford-class-assignment2
 ==========================
 
-The first assignment in the Stanford iOS7 course on iTunes
+The second assignment in the Stanford iOS7 course on iTunes
