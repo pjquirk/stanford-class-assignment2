@@ -58,7 +58,7 @@ static const int COST_TO_CHOOSE = 1;
     {
         if (!card.isMatched)
         {
-            if (card.chosen)
+            if (!card.isChosen)
             {
                 for (Card* otherCard in self.cards) {
                     if (otherCard.isChosen && !otherCard.isMatched)
@@ -66,6 +66,7 @@ static const int COST_TO_CHOOSE = 1;
                         int matchScore = [card match:@[otherCard]];
                         if (matchScore)
                         {
+                            NSLog(@"Matched %@ with %@", card.contents, otherCard.contents);
                             self.score += matchScore * MATCH_BONUS;
                             card.matched = YES;
                             otherCard.matched = YES;
